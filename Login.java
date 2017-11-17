@@ -1,19 +1,20 @@
+/*************************************************************************************************************************************
+ * November 17,2017
+ * Prepared By Minita Dabhi
+ * The login page has been created with fields Username and Password. The EmployeeData database has been created in SQLite.
+ * If the Username and Password matches with saved info, 'Correct Username and Password' message pops up. If not, Error message pops up.
+ *  
+ *************************************************************************************************************************************/
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-
 import java.sql.*;
-
 import javax.swing.JLabel;
-
 import java.awt.Font;
 import java.awt.Color;
-
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 //import javax.swing.*;
@@ -38,7 +39,7 @@ public class Login {
 		});
 	}
 	
-	Connection connDB=null;
+	Connection connDB=null; //Declares variable for connection with Database  
 	private JTextField UserNameField;
 	private JPasswordField passwordField;
 	/**
@@ -46,7 +47,7 @@ public class Login {
 	 */
 	public Login() {
 		initialize();
-		connDB = sqliteConnection.dbConnector();
+		connDB = sqliteConnection.dbConnector(); // Checks for the connectivity with Database
 	}
 
 	/**
@@ -58,7 +59,7 @@ public class Login {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("UserName");
+		JLabel lblNewLabel = new JLabel("UserName"); 
 		lblNewLabel.setBackground(new Color(0, 153, 255));
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel.setBounds(263, 160, 100, 26);
@@ -79,7 +80,9 @@ public class Login {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					// Query for finding the matching data with entered username and password
 						String query = "select * from EmployeeData where Username = ? and Password = ? ";
+					///Prepares statement to run the query
 						PreparedStatement pst = connDB.prepareStatement(query);
 						pst.setString(1, UserNameField.getText());
 						pst.setString(2, passwordField.getText());
@@ -92,22 +95,20 @@ public class Login {
 						}
 						
 						if(count == 2){
-							JOptionPane.showMessageDialog(null, "Correct Username and Password!!!");
+							JOptionPane.showMessageDialog(null, "Correct Username and Password!!!");// shows message if data is matching
 						}
 						else if(count >= 2){
-							JOptionPane.showMessageDialog(null, "Duplicate Username and Password!!!");
+							JOptionPane.showMessageDialog(null, "Duplicate Username and Password!!!");// shows error message if duplicate username and password
 						}
 						else{
-							JOptionPane.showMessageDialog(null, "Username OR Password is incorrect!!!");
+							JOptionPane.showMessageDialog(null, "Username OR Password is incorrect!!!"); // shows error message if incorrect username or password
 						}
-						
-						rs.close();
-						pst.close();
-				}
+						   rs.close();
+						   pst.close();						
+					}
 				catch(Exception e){
 					JOptionPane.showMessageDialog(null, e);
-				}
-				
+				   }
 			}
 		});
 		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 20));
